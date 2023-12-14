@@ -6,23 +6,43 @@ import { getElementById } from "../../helper";
 
 
 let isMouseDown = false;
-export const canvasGlobalMouseEventHandle = (evt:MouseEvent,type:ActionType,id:string,elements:any)=>{
+let startPointX = 0;
+let startPointY = 0;
+export const canvasGlobalMouseEventHandle = (evt:MouseEvent,type:ActionType,id:string='',elements:any)=>{
+    
+    const offsetX = evt.offsetX;
+    const offsetY = evt.offsetY;
 
-    const x = evt.offsetX;
-    const y = evt.offsetY;
+    // console.log('xxx',offsetX,offsetY)
     if(type === ActionType.Down){
         isMouseDown = true;
+
+        id && getElementById(elements,id,(element)=>{
+            const {x,y} = element.getTextElementData();
+            startPointX = offsetX - x;
+            startPointY = offsetY - y;
+            
+        })
     }
 
 
     if(type === ActionType.Move){
 
-        id && getElementById(elements,id,(element)=>{
-            element.changeProperty({
-                x,
-                y
+        if(isMouseDown && id){
+            
+            id && getElementById(elements,id,(element)=>{
+                
+                // console.log()
+                const x = offsetX - startPointX;
+                const y = offsetY - startPointY;
+                element.changeProperty({
+                    x, 
+                    y,
+                })
+                
             })
-        })
+        }
+       
     }
 
 

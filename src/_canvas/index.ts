@@ -56,10 +56,10 @@ export default class Stage {
     const y = evt.offsetY;
 
     let id = this.hitJudge(x, y);
-
+    
     id && this.eventSimulator.addAction({ type, id }, evt);
 
-    canvasGlobalMouseEventHandle(evt,type,id='',this.elements);
+    canvasGlobalMouseEventHandle(evt,type,id,this.elements);
 
   };
 

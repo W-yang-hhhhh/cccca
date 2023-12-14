@@ -55,6 +55,7 @@ export default class Text extends shapesBase {
     ctx.fillStyle = fill;
     ctx.textAlign = 'left';
     ctx.textBaseline = "top";
+    // console.log('xxxx',x,y)
     ctx.fillText(text,x,y,width);
     // ctx.restore();
 
