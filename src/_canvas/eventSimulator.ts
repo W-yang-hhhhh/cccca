@@ -9,6 +9,8 @@ export enum ActionType {
   Down = "DOWN",
   Up = "Up",
   Move = "MOVE",
+  Enter = "ENTER",
+  Leave = "LEAVE"
 }
 
 export default class EventSimulator {

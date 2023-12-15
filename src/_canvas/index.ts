@@ -45,9 +45,19 @@ export default class Stage {
       "mousemove",
       this.handleCreator(ActionType.Move)
     );
+    this.canvas.addEventListener(
+      "mouseenter",
+      this.handleCreator(ActionType.Enter)
+    );
+    this.canvas.addEventListener(
+      "mouseout",
+      this.handleCreator(ActionType.Leave)
+    );
+
+    
     this.shapes = new Set();
     this.eventSimulator = new EventSimulator();
-    this.currentSelectId = '';
+    this.currentSelectId = "";
     this.isMouseDown = false;
   }
   //鼠标事件
@@ -56,11 +66,10 @@ export default class Stage {
     const y = evt.offsetY;
 
     let id = this.hitJudge(x, y);
-    
+
     id && this.eventSimulator.addAction({ type, id }, evt);
 
-    canvasGlobalMouseEventHandle(evt,type,id,this.elements);
-
+    canvasGlobalMouseEventHandle(evt, type, id, this.elements);
   };
 
   private hitJudge(x: number, y: number): string | undefined {
@@ -73,18 +82,21 @@ export default class Stage {
   }
 
   add(element: Text) {
-
     const textData = element.getTextElementData();
     //deal text
-    if(textData.elementType === elementType.text){
-        //初始化 w&h
-        const _w = getTextWidth(this.osCtx,textData.text,textData.fontSize,textData.fontFamily)
-        element.changeProperty({
-            width: _w,
-            height: textData.fontSize
-        })
+    if (textData.elementType === elementType.text) {
+      //初始化 w&h
+      const _w = getTextWidth(
+        this.osCtx,
+        textData.text,
+        textData.fontSize,
+        textData.fontFamily
+      );
+      element.changeProperty({
+        width: _w,
+        height: textData.fontSize,
+      });
     }
-
 
     //common
     const id = element.getId();
@@ -92,8 +104,6 @@ export default class Stage {
     this.elements.push(element);
     this.shapes.add(id);
     this.currentSelectId = id;
-
-    
   }
 
   change(id: string, property: any) {
@@ -107,35 +117,31 @@ export default class Stage {
     ///delete Element;
   }
 
-  getCurrentSelectId(){
+  getCurrentSelectId() {
     return this.currentSelectId;
   }
 
-
   render() {
-    this.ctx.clearRect(0,0,this.ctx.canvas.width,this.ctx.canvas.height);
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
     this.elements.map((item) => {
-        //渲染选中框
-        if(item.id === this.currentSelectId){
-            renderSelect( this.ctx,item);
-        }
+      //渲染选中框
+      if (item.id === this.currentSelectId) {
+        renderSelect(this.ctx, item);
+      }
       item?.draw(this.ctx, this.osCtx);
     });
   }
 
-
-  renderLoop(){
+  renderLoop() {
     let timerId = undefined;
     const scheduleFunc = () => {
-        timerId = window.requestAnimationFrame(() => {
-       
-            this.render();
-            scheduleFunc();
-          
-        });
-      };
+      timerId = window.requestAnimationFrame(() => {
+        this.render();
+        scheduleFunc();
+      });
+    };
 
-      scheduleFunc();
+    scheduleFunc();
   }
 }
