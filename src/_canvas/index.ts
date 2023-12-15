@@ -5,6 +5,7 @@ import { renderSelect } from "./render/select";
 import { elementType } from "./types/elment";
 import { getTextWidth } from "./helper/text";
 import { canvasGlobalMouseEventHandle } from "./event/keyBoradEvent";
+import { renderHover } from "./render/hover";
 
 export default class Stage {
   private canvas: HTMLCanvasElement;
@@ -16,6 +17,7 @@ export default class Stage {
   private eventSimulator: EventSimulator;
   private shapes: Set<string>;
   private currentSelectId: string;
+  private currentHoverId: string;
   private isMouseDown: boolean;
 
   constructor(canvas: HTMLCanvasElement) {
@@ -54,30 +56,35 @@ export default class Stage {
       this.handleCreator(ActionType.Leave)
     );
 
-    
     this.shapes = new Set();
     this.eventSimulator = new EventSimulator();
     this.currentSelectId = "";
+    this.currentHoverId = "";
     this.isMouseDown = false;
   }
   //鼠标事件
-  private handleCreator = (type: ActionType) => (evt: MouseEvent) => {
+  handleCreator = (type: ActionType) => (evt: MouseEvent) => {
     const x = evt.offsetX;
     const y = evt.offsetY;
 
     let id = this.hitJudge(x, y);
 
-    id && this.eventSimulator.addAction({ type, id }, evt);
+    if (id) {
+      this.eventSimulator.addAction({ type, id }, evt);
 
-    canvasGlobalMouseEventHandle(evt, type, id, this.elements);
+      this.currentHoverId = id;
+    }
+
+    canvasGlobalMouseEventHandle.call(this, evt, type, id, this.elements);
   };
 
   private hitJudge(x: number, y: number): string | undefined {
     const rgba = Array.from(
       this.osCtx.getImageData(x * this.dpr, y * this.dpr, 1, 1).data
     );
+
     const id = rgbaToId(rgba as [number, number, number, number]);
-    this.currentSelectId = id;
+
     return this.shapes.has(id) ? id : undefined;
   }
 
@@ -126,8 +133,8 @@ export default class Stage {
 
     this.elements.map((item) => {
       //渲染选中框
-      if (item.id === this.currentSelectId) {
-        renderSelect(this.ctx, item);
+      if (item.id === this.currentHoverId) {
+        renderHover(this.ctx, item);
       }
       item?.draw(this.ctx, this.osCtx);
     });
