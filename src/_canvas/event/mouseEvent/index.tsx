@@ -1,3 +1,4 @@
+import Stage from "../..";
 import { ActionType } from "../../eventSimulator";
 import { getElementById } from "../../helper";
 
@@ -5,19 +6,19 @@ let isMouseDown = false;
 let startPointX = 0;
 let startPointY = 0;
 let currentId = "";
-export const canvasGlobalMouseEventHandle = (
+export function canvasGlobalMouseEventHandle(
+  this: Stage,
   evt: MouseEvent,
   type: ActionType,
   id: string = "",
   elements: any
-) => {
+) {
   const offsetX = evt.offsetX;
   const offsetY = evt.offsetY;
 
   //mouseDown
   if (type === ActionType.Down) {
     isMouseDown = true;
-
     id &&
       getElementById(elements, id, (element) => {
         const { x, y } = element.getTextElementData();
@@ -25,6 +26,8 @@ export const canvasGlobalMouseEventHandle = (
         startPointY = offsetY - y;
         currentId = id;
       });
+
+    this.currentSelectId = id;
   }
 
   //mouseMove
@@ -44,7 +47,6 @@ export const canvasGlobalMouseEventHandle = (
   //mouseUp
   if (type === ActionType.Up) {
     isMouseDown = false;
-    console.log("this", this);
   }
 
   //mouseLeave
@@ -53,4 +55,4 @@ export const canvasGlobalMouseEventHandle = (
     isMouseDown = false;
     currentId = "";
   }
-};
+}

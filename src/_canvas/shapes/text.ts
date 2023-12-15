@@ -3,7 +3,7 @@ import { elementType } from "../types/elment";
 import shapesBase from "./base";
 
 interface textType {
-  elementType: elementType,
+  elementType: elementType;
   text: string;
   fontFamily: string;
   fontSize: number;
@@ -37,45 +37,41 @@ export default class Text extends shapesBase {
   constructor(_textElement: Partial<textType>) {
     super();
     this.textElement = { ...defaultTextValue, ..._textElement };
-
   }
 
-
-  changeProperty(property:Partial<textType>){
-   let keyArr= Object.keys(property) as Array<keyof textType> ; 
-   keyArr.forEach(_key =>{
-    (this.textElement[_key] as any) = property[_key];
-   })
+  changeProperty(property: Partial<textType>) {
+    let keyArr = Object.keys(property) as Array<keyof textType>;
+    keyArr.forEach((_key) => {
+      (this.textElement[_key] as any) = property[_key];
+    });
   }
-  draw(ctx: CanvasRenderingContext2D,oCtx: OffscreenCanvasRenderingContext2D) {
-    
-    const{text,x,y,width,height,fill,fontSize} = this.textElement;
-    let length = ctx.measureText(text).width
+  draw(ctx: CanvasRenderingContext2D, oCtx: OffscreenCanvasRenderingContext2D) {
+    const { text, x, y, width, height, fill, fontSize } = this.textElement;
+    let length = ctx.measureText(text).width;
     ctx.font = `${fontSize}px 宋体`;
     ctx.fillStyle = fill;
-    ctx.textAlign = 'left';
+    ctx.textAlign = "left";
     ctx.textBaseline = "top";
     // console.log('xxxx',x,y)
-    ctx.fillText(text,x,y,width);
+    ctx.fillText(text, x, y, width);
     // ctx.restore();
-
 
     ////// OffScreenCanvas Paint //////////////
 
     const [r, g, b, a] = idToRgba(this.id);
+    oCtx.clearRect(0, 0, oCtx.canvas.width, oCtx.canvas.height);
     oCtx.font = `${fontSize}px 宋体`;
-    
+
     // oCtx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     // oCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     // oCtx.fillText(text,40,40,200);
     oCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-    oCtx.textAlign = 'left';
+    oCtx.textAlign = "left";
     ctx.textBaseline = "top";
-    oCtx.fillRect(x,y,width,height);
+    oCtx.fillRect(x, y, width, height);
   }
 
-
-  getTextElementData(){
+  getTextElementData() {
     return this.textElement;
   }
 }

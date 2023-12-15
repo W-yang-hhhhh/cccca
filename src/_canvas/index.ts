@@ -4,7 +4,7 @@ import Text from "./shapes/text";
 import { renderSelect } from "./render/select";
 import { elementType } from "./types/elment";
 import { getTextWidth } from "./helper/text";
-import { canvasGlobalMouseEventHandle } from "./event/keyBoradEvent";
+import { canvasGlobalMouseEventHandle } from "./event/mouseEvent";
 import { renderHover } from "./render/hover";
 
 export default class Stage {
@@ -16,7 +16,7 @@ export default class Stage {
   private dpr: number;
   private eventSimulator: EventSimulator;
   private shapes: Set<string>;
-  private currentSelectId: string;
+  public currentSelectId: string;
   private currentHoverId: string;
   private isMouseDown: boolean;
 
@@ -71,9 +71,9 @@ export default class Stage {
 
     if (id) {
       this.eventSimulator.addAction({ type, id }, evt);
-
-      this.currentHoverId = id;
     }
+
+    this.currentHoverId = id || "";
 
     canvasGlobalMouseEventHandle.call(this, evt, type, id, this.elements);
   };
@@ -116,8 +116,6 @@ export default class Stage {
   change(id: string, property: any) {
     let currentIndex = this.elements.findIndex((item) => item.id === id);
     this.elements[currentIndex].changeProperty(property);
-
-    // this.render();
   }
 
   delete(id: string) {
@@ -133,7 +131,13 @@ export default class Stage {
 
     this.elements.map((item) => {
       //渲染选中框
-      if (item.id === this.currentHoverId) {
+      if (item.id === this.currentSelectId) {
+        renderSelect(this.ctx, item);
+      }
+      if (
+        item.id === this.currentHoverId &&
+        this.currentHoverId !== this.currentSelectId
+      ) {
         renderHover(this.ctx, item);
       }
       item?.draw(this.ctx, this.osCtx);
