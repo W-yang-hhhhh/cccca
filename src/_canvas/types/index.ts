@@ -21,3 +21,11 @@ export interface Shape {
     mouseleave = 'mouseleave',
   }
 
+
+  export type Pos = {
+    x:number
+    y:number
+  }
+
+
+  export type Vec2 = [number,number];

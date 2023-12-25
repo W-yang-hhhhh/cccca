@@ -5,7 +5,7 @@ import Text from "../shapes/text";
 const POINT_SIZE = 8;
 const POINT_SIZE_OFFSET = POINT_SIZE / 2
 export const renderSelect = (ctx: CanvasRenderingContext2D, osCtx:OffscreenCanvasRenderingContext2D, data: Text) => {
-  const _data = data.getTextElementData();
+  const _data = data.getElementData();
   const { width, height, x, y } = _data;
   ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height)
   ctx.beginPath();

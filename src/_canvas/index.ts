@@ -2,7 +2,7 @@ import { rgbaToId } from "./helper";
 import EventSimulator, { ActionType } from "./eventSimulator";
 import Text from "./shapes/text";
 import { renderSelect } from "./render/select";
-import { elementType } from "./types/elment";
+import { elementType } from "./types/element";
 import { getTextWidth } from "./helper/text";
 import { canvasGlobalMouseEventHandle } from "./event/mouseEvent";
 import { renderHover } from "./render/hover";
@@ -89,7 +89,7 @@ export default class Stage {
   }
 
   add(element: Text) {
-    const textData = element.getTextElementData();
+    const textData = element.getElementData();
     //deal text
     if (textData.elementType === elementType.text) {
       //初始化 w&h

@@ -1,3 +1,4 @@
+import {AElementType} from '../types/element'
 export function idToRgba(id: string) {
     return id.split("-");
   }
@@ -26,9 +27,11 @@ export function idToRgba(id: string) {
       .join("-");
   }
 
-export function getElementById (element:any[],id:string,cb:(element:any)=>void){
+export function getElementById (element:AElementType[],id:string,cb?:(element:AElementType)=>void):AElementType | undefined{
   
   let index = element.findIndex(item=>item.id === id);
-
+  if(index === undefined) return undefined
   cb && cb(element[index]);
+
+  return element[index];
 }

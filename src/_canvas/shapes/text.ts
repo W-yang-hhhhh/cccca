@@ -1,5 +1,5 @@
 import { idToRgba } from "../helper";
-import { elementType } from "../types/elment";
+import { elementType } from "../types/element";
 import shapesBase from "./base";
 
 interface textType {
@@ -13,6 +13,8 @@ interface textType {
   letterSpace: number;
   x: number;
   y: number;
+  angle: number;
+  scale:[number, number];
   width: number;
   height: number;
 }
@@ -27,51 +29,55 @@ const defaultTextValue = {
   letterSpace: 1,
   x: 0,
   y: 0,
+  angle: 0,
+  scale:[1, 1] as [number, number],
   width: 0,
   height: 0,
 };
 
 export default class Text extends shapesBase {
-  private textElement: textType;
+  private _element: textType;
 
   constructor(_textElement: Partial<textType>) {
     super();
-    this.textElement = { ...defaultTextValue, ..._textElement };
+    this._element = { ...defaultTextValue, ..._textElement };
   }
 
   changeProperty(property: Partial<textType>) {
     let keyArr = Object.keys(property) as Array<keyof textType>;
     keyArr.forEach((_key) => {
-      (this.textElement[_key] as any) = property[_key];
+      (this._element[_key] as any) = property[_key];
     });
   }
   draw(ctx: CanvasRenderingContext2D, oCtx: OffscreenCanvasRenderingContext2D) {
-    const { text, x, y, width, height, fill, fontSize } = this.textElement;
-    let length = ctx.measureText(text).width;
+    const { text, x, y, width, height, fill, fontSize, angle } = this._element;
+    ctx.save();
     ctx.font = `${fontSize}px 宋体`;
     ctx.fillStyle = fill;
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    // console.log('xxxx',x,y)
-    ctx.fillText(text, x, y, width);
-    // ctx.restore();
 
-    ////// OffScreenCanvas Paint //////////////
+    ctx.translate(x,y);
+    ctx.rotate(angle * Math.PI / 180);
+
+    ctx.fillText(text, 0, 0);
+    ctx.restore();
+
+
+    //////////////////////////***** OffScreenCanvas Paint *******????????????//////////////
+
 
     const [r, g, b, a] = idToRgba(this.id);
     oCtx.clearRect(0, 0, oCtx.canvas.width, oCtx.canvas.height);
     oCtx.font = `${fontSize}px 宋体`;
 
-    // oCtx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-    // oCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-    // oCtx.fillText(text,40,40,200);
     oCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     oCtx.textAlign = "left";
     ctx.textBaseline = "top";
     oCtx.fillRect(x, y, width, height);
   }
 
-  getTextElementData() {
-    return this.textElement;
+  getElementData() {
+    return this._element;
   }
 }
