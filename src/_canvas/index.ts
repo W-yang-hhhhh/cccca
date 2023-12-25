@@ -10,7 +10,7 @@ import { renderHover } from "./render/hover";
 export default class Stage {
   private canvas: HTMLCanvasElement;
   private osCanvas: OffscreenCanvas;
-  private ctx: CanvasRenderingContext2D;
+  public ctx: CanvasRenderingContext2D;
   private osCtx: OffscreenCanvasRenderingContext2D;
   private elements: any[];
   private dpr: number;
@@ -84,7 +84,7 @@ export default class Stage {
     );
 
     const id = rgbaToId(rgba as [number, number, number, number]);
-
+    
     return this.shapes.has(id) ? id : undefined;
   }
 
@@ -132,7 +132,7 @@ export default class Stage {
     this.elements.map((item) => {
       //渲染选中框
       if (item.id === this.currentSelectId) {
-        renderSelect(this.ctx, item);
+        renderSelect(this.ctx,this.osCtx, item);
       }
       if (
         item.id === this.currentHoverId &&

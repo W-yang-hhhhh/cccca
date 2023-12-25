@@ -32,16 +32,18 @@ export function canvasGlobalMouseEventHandle(
 
   //mouseMove
   if (type === ActionType.Move) {
+    //--mouseDown
     if (isMouseDown && currentId) {
       getElementById(elements, currentId, (element) => {
         const x = offsetX - startPointX;
         const y = offsetY - startPointY;
-        element.changeProperty({
+        element?.changeProperty({
           x,
           y,
         });
       });
     }
+    //--mouseMove
   }
 
   //mouseUp
