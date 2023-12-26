@@ -55,6 +55,14 @@ export const getSelectionElementEventType = (element:AElementType,pos:Pos)=>{
         direction = SelectEventTypeDir.III;
         eventType = SelectEventType.scale;
     }
+
+    if(eventType === SelectEventType.scale){
+        document.body.style.cursor ='nesw-resize'
+    }else if(eventType === SelectEventType.rotate) {
+        document.body.style.cursor ='crosshair'
+    }else {
+        document.body.style.cursor ='auto'
+    }
     return {
         eventType,
         direction

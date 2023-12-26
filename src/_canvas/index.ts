@@ -134,6 +134,7 @@ export default class Stage {
       if (item.id === this.currentSelectId) {
         renderSelect(this.ctx,this.osCtx, item);
       }
+      //渲染Hover
       if (
         item.id === this.currentHoverId &&
         this.currentHoverId !== this.currentSelectId

@@ -56,7 +56,6 @@ export default class Text extends shapesBase {
     ctx.fillStyle = fill;
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
-
     ctx.translate(x,y);
     ctx.rotate(angle * Math.PI / 180);
 

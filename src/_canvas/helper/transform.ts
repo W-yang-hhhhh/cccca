@@ -9,15 +9,19 @@ export const transformElement = (
   direction: SelectEventTypeDir,
   elementArr: any[],
   curId: string,
-  startPos: Pos,
-  pos: Pos
+  startPos: Vec2,
+  pos: Vec2
 ) => {
-
     const currentElement = getElementById(elementArr,curId);
-
+    if(!currentElement)return;
+    const {angle: _a} = currentElement.getElementData();
     if(eventType === SelectEventType.rotate){
-        const elementCenterPoint = currentElement 
-        const angle = getRotateAngle([])
+        const _cp = getElementCenterPoint(currentElement);
+        const angle = getRotateAngle(_cp,startPos,pos);
+        console.log('angle',angle)
+        currentElement.changeProperty({
+            angle:angle + _a
+        })
     }
 
 };
@@ -53,10 +57,10 @@ function getRotateAngle(centerPoint:Vec2, startPoint:Vec2, endPoint:Vec2) {
 
 
 function getElementCenterPoint(element:AElementType):Vec2 {
-    const {} = element;
-
-
-    return [1,1]
+    const {x,y,width,height} = element.getElementData();
+    const px = x+ width / 2;
+    const py = y+ height/2
+    return [px,py]
 
 }
 

@@ -12,8 +12,12 @@ let isMouseDown = false;
 let startPointX = 0;
 let startPointY = 0;
 let currentId = ""; //点击下的 id
+
 let eventType: undefined | SelectEventType = undefined;
 let direction: undefined | SelectEventTypeDir = undefined;
+
+let prevPointX = 0;
+let prevPointY = 0;
 export function canvasGlobalMouseEventHandle(
   this: Stage,
   evt: MouseEvent,
@@ -55,12 +59,12 @@ export function canvasGlobalMouseEventHandle(
           direction,
           elements,
           this.currentSelectId,
-          { x: startPointX, y: startPointY },
-          {
-            x: offsetX,
-            y: offsetY,
-          }
+          [startPointX, startPointY],
+          [offsetX, offsetY]
         );
+        // prevPointX = offsetX;
+        // prevPointY = offsetY;
+        return ;
       }
 
       //拖拽位移
@@ -82,6 +86,7 @@ export function canvasGlobalMouseEventHandle(
           element,
           { x: offsetX, y: offsetY }
         );
+        console.log('eventType',eventType)
         direction = _d;
         eventType = _e;
       });
