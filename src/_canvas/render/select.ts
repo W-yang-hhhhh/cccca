@@ -6,11 +6,14 @@ const POINT_SIZE = 8;
 const POINT_SIZE_OFFSET = POINT_SIZE / 2
 export const renderSelect = (ctx: CanvasRenderingContext2D, osCtx:OffscreenCanvasRenderingContext2D, data: Text) => {
   const _data = data.getElementData();
-  const { width, height, x, y, angle,  } = _data;
+  const { width:_w, height:_h, x, y, angle,scale  } = _data;
+  let width = _w * scale[0];
+  let height = _h * scale[1];
   ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
   ctx.save();
   ctx.translate(x + width/2,y + height/2);
   ctx.rotate(angle);
+  // ctx.scale(scale[0],scale[1])
   ctx.beginPath();
   ctx.strokeStyle = "rgb(29,128,255)";
   ctx.fillStyle = "#fff";

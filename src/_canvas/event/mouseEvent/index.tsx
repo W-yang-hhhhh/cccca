@@ -17,6 +17,8 @@ let eventType: undefined | SelectEventType = undefined;
 let direction: undefined | SelectEventTypeDir = undefined;
 
 let startAngle = 0;
+let startScale = [1,1];
+let initData = {x: 0,y:0,width:0,height:0};
 export function canvasGlobalMouseEventHandle(
   this: Stage,
   evt: MouseEvent,
@@ -33,8 +35,12 @@ export function canvasGlobalMouseEventHandle(
     //有事件类型特出处理
     if (eventType) {
       getElementById(elements, this.currentSelectId, (element) => {
-        const { angle } = element.getElementData();
+        const { angle,scale,x,y,width,height } = element.getElementData();
+        initData = {
+          x,y,width,height
+        }
         startAngle = angle;
+        startScale = scale;
       });
       startPointX = offsetX;
       startPointY = offsetY;
@@ -59,6 +65,7 @@ export function canvasGlobalMouseEventHandle(
     if (isMouseDown) {
       //拖拽缩放旋转
       if (eventType && direction) {
+        
         transformElement(
           eventType,
           direction,
@@ -66,7 +73,7 @@ export function canvasGlobalMouseEventHandle(
           this.currentSelectId,
           [startPointX, startPointY],
           [offsetX, offsetY],
-          { angle: startAngle }
+          { angle: startAngle,scale:startScale, ...initData }
         );
         // prevPointX = offsetX;
         // prevPointY = offsetY;
@@ -92,7 +99,6 @@ export function canvasGlobalMouseEventHandle(
           element,
           { x: offsetX, y: offsetY }
         );
-        console.log("eventType", eventType);
         direction = _d;
         eventType = _e;
       });
