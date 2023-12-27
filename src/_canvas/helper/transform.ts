@@ -1,7 +1,7 @@
 import { getElementById } from ".";
 import { SelectEventType, SelectEventTypeDir } from "../event/mouseEvent/util";
 import { Pos, Vec2 } from "../types";
-import {mat3} from 'gl-matrix';
+import {mat2d} from 'gl-matrix';
 import { AElementType } from "../types/element";
 
 export const transformElement = (
@@ -14,11 +14,13 @@ export const transformElement = (
 ) => {
     const currentElement = getElementById(elementArr,curId);
     if(!currentElement)return;
-    const {angle: _a} = currentElement.getElementData();
+    const {angle: _a,x,y} = currentElement.getElementData();
     if(eventType === SelectEventType.rotate){
         const _cp = getElementCenterPoint(currentElement);
         const angle = getRotateAngle(_cp,startPos,pos);
         console.log('angle',angle)
+        let a = mat2d.create();
+        let b = mat2d.fromValues(1,0,0,1,x,y);
         currentElement.changeProperty({
             angle:angle + _a
         })
@@ -51,6 +53,7 @@ function getRotateAngle(centerPoint:Vec2, startPoint:Vec2, endPoint:Vec2) {
     const denominator = Math.sqrt(Math.pow(v1[0], 2) + Math.pow(v1[1], 2)) 
         * Math.sqrt(Math.pow(v2[0], 2) + Math.pow(v2[1], 2));
     const sin = numerator / denominator;
+    console.log('xxxax',sin)
     return Math.asin(sin);
 }
 
@@ -59,7 +62,7 @@ function getRotateAngle(centerPoint:Vec2, startPoint:Vec2, endPoint:Vec2) {
 function getElementCenterPoint(element:AElementType):Vec2 {
     const {x,y,width,height} = element.getElementData();
     const px = x+ width / 2;
-    const py = y+ height/2
+    const py = y+ height / 2
     return [px,py]
 
 }
