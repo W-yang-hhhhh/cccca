@@ -16,8 +16,7 @@ let currentId = ""; //点击下的 id
 let eventType: undefined | SelectEventType = undefined;
 let direction: undefined | SelectEventTypeDir = undefined;
 
-let prevPointX = 0;
-let prevPointY = 0;
+let startAngle = 0;
 export function canvasGlobalMouseEventHandle(
   this: Stage,
   evt: MouseEvent,
@@ -33,6 +32,10 @@ export function canvasGlobalMouseEventHandle(
     isMouseDown = true;
     //有事件类型特出处理
     if (eventType) {
+      getElementById(elements, this.currentSelectId, (element) => {
+        const { angle } = element.getElementData();
+        startAngle = angle;
+      });
       startPointX = offsetX;
       startPointY = offsetY;
       return;
@@ -62,11 +65,12 @@ export function canvasGlobalMouseEventHandle(
           elements,
           this.currentSelectId,
           [startPointX, startPointY],
-          [offsetX, offsetY]
+          [offsetX, offsetY],
+          { angle: startAngle }
         );
         // prevPointX = offsetX;
         // prevPointY = offsetY;
-        return ;
+        return;
       }
 
       //拖拽位移
@@ -88,7 +92,7 @@ export function canvasGlobalMouseEventHandle(
           element,
           { x: offsetX, y: offsetY }
         );
-        console.log('eventType',eventType)
+        console.log("eventType", eventType);
         direction = _d;
         eventType = _e;
       });
@@ -101,6 +105,7 @@ export function canvasGlobalMouseEventHandle(
   if (type === ActionType.Up) {
     isMouseDown = false;
     currentId = "";
+    startAngle = 0;
   }
 
   //mouseLeave
