@@ -57,8 +57,7 @@ export default class Text extends shapesBase {
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
     ctx.translate(x + width/2,y+height/2);
-    ctx.rotate(angle * Math.PI / 180);
-
+    ctx.rotate(angle);
     ctx.fillText(text,-width/2,-height/2);
     ctx.restore();
 
@@ -68,12 +67,16 @@ export default class Text extends shapesBase {
 
     const [r, g, b, a] = idToRgba(this.id);
     oCtx.clearRect(0, 0, oCtx.canvas.width, oCtx.canvas.height);
+    oCtx.save();
     oCtx.font = `${fontSize}px 宋体`;
-
     oCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     oCtx.textAlign = "left";
-    ctx.textBaseline = "top";
-    oCtx.fillRect(x, y, width, height);
+    oCtx.textBaseline = "top";
+
+    oCtx.translate(x + width/2,y + height/2);
+    oCtx.rotate(angle);
+    oCtx.fillRect( - width/2,  - height/2, width, height);
+    oCtx.restore();
   }
 
   getElementData() {

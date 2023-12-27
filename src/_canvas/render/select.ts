@@ -10,7 +10,7 @@ export const renderSelect = (ctx: CanvasRenderingContext2D, osCtx:OffscreenCanva
   ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
   ctx.save();
   ctx.translate(x + width/2,y + height/2);
-  ctx.rotate(angle * Math.PI / 180);
+  ctx.rotate(angle);
   ctx.beginPath();
   ctx.strokeStyle = "rgb(29,128,255)";
   ctx.fillStyle = "#fff";

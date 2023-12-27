@@ -19,10 +19,8 @@ export const transformElement = (
         const _cp = getElementCenterPoint(currentElement);
         const angle = getRotateAngle(_cp,startPos,pos);
         console.log('angle',angle)
-        let a = mat2d.create();
-        let b = mat2d.fromValues(1,0,0,1,x,y);
         currentElement.changeProperty({
-            angle:angle + _a
+            angle: angle
         })
     }
 
@@ -43,6 +41,7 @@ export const transformElement = (
 function getRotateAngle(centerPoint:Vec2, startPoint:Vec2, endPoint:Vec2) {
     const [centerX, centerY] = centerPoint;
     const [rotateStartX, rotateStartY] = startPoint;
+    console.log('endPoint',endPoint)
     const [touchX, touchY] = endPoint;
     // 两个向量
     const v1 = [rotateStartX - centerX, rotateStartY - centerY];
@@ -53,7 +52,7 @@ function getRotateAngle(centerPoint:Vec2, startPoint:Vec2, endPoint:Vec2) {
     const denominator = Math.sqrt(Math.pow(v1[0], 2) + Math.pow(v1[1], 2)) 
         * Math.sqrt(Math.pow(v2[0], 2) + Math.pow(v2[1], 2));
     const sin = numerator / denominator;
-    console.log('xxxax',sin)
+
     return Math.asin(sin);
 }
 

@@ -33,6 +33,8 @@ export function canvasGlobalMouseEventHandle(
     isMouseDown = true;
     //有事件类型特出处理
     if (eventType) {
+      startPointX = offsetX;
+      startPointY = offsetY;
       return;
     }
 
