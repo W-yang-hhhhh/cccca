@@ -90,16 +90,21 @@ function getScaleInfo(
   pos: Vec2,
   currentElementInfo: any
 ) {
-    
-  const disY = pos[1] - startPos[1];
-  const disX = pos[0] - startPos[0];
+  let disY = pos[1] - startPos[1];
+  let disX = pos[0] - startPos[0];
+    if(direction === SelectEventTypeDir.II || direction === SelectEventTypeDir.III ){
+        disY = -disY;
+        disX = -disX;
+    }
   const { width, height, x, y, fontSize } = currentElementInfo;
   let proportion =
     Math.abs(disY) >= Math.abs(disX)
       ? (height - disY) / height
       : (width - disX) / width;
   proportion = Number(proportion.toFixed(3));
-
+  if(proportion < 0.5){
+    proportion = 0.5;
+  }
   let _w = width;
   let _h = height;
   let _x = x;
@@ -136,7 +141,7 @@ function getScaleInfo(
       fs = getFonSizeByHeight(_h,1);
       break;
   }
-  console.log('fs',fs)
+
   return {
     _w,
     _h,
