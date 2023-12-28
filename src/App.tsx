@@ -47,7 +47,7 @@ function App() {
   return (
     <>
       <div className="app">
-        <canvas id="mainCanvas" style={{width:'400px',height:'400px'}} ref={canvasRef}></canvas>
+        <canvas id="mainCanvas" style={{width:'900px',height:'500px'}} ref={canvasRef}></canvas>
         <div className="toolbar">
           <input ref={inputRef} type="text" value={textValue} onChange={e=>setTextValue(e.target.value)} />
           <button onClick={createTextHandle}>create</button>

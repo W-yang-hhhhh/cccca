@@ -18,7 +18,7 @@ let direction: undefined | SelectEventTypeDir = undefined;
 
 let startAngle = 0;
 let startScale = [1,1];
-let initData = {x: 0,y:0,width:0,height:0};
+let initData = {x: 0,y:0,width:0,height:0,fontSize:0};
 export function canvasGlobalMouseEventHandle(
   this: Stage,
   evt: MouseEvent,
@@ -35,9 +35,9 @@ export function canvasGlobalMouseEventHandle(
     //有事件类型特出处理
     if (eventType) {
       getElementById(elements, this.currentSelectId, (element) => {
-        const { angle,scale,x,y,width,height } = element.getElementData();
+        const { angle,scale,x,y,width,height,fontSize } = element.getElementData();
         initData = {
-          x,y,width,height
+          x,y,width,height,fontSize
         }
         startAngle = angle;
         startScale = scale;

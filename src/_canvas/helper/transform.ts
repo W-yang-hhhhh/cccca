@@ -1,7 +1,7 @@
 import { getElementById } from ".";
 import { SelectEventType, SelectEventTypeDir } from "../event/mouseEvent/util";
 import { Pos, Vec2 } from "../types";
-import { mat2d } from "gl-matrix";
+import { mat2d, mat3 } from "gl-matrix";
 import { AElementType } from "../types/element";
 
 export const transformElement = (
@@ -13,7 +13,6 @@ export const transformElement = (
   pos: Vec2,
   initData: any
 ) => {
-
   const {
     angle: startAngle,
     scale: startScale,
@@ -24,7 +23,7 @@ export const transformElement = (
   } = initData;
   const currentElement = getElementById(elementArr, curId);
   if (!currentElement) return;
-  const { angle: _a, x, y } = currentElement.getElementData();
+  const { angle: _a, x, y, fontSize } = currentElement.getElementData();
   const _cp = getElementCenterPoint(currentElement);
   if (eventType === SelectEventType.rotate) {
     //旋转
@@ -35,11 +34,12 @@ export const transformElement = (
   } else if (eventType === SelectEventType.scale) {
     //目前只有等比缩放
 
-    const { _w, _h, _x, _y } = getScaleInfo(direction, _cp, startPos, pos, {
+    const { _w, _h, _x, _y, fs } = getScaleInfo(direction, _cp, startPos, pos, {
       x: startX,
       y: startY,
       width,
       height,
+      fontSize
     });
 
     currentElement.changeProperty({
@@ -47,6 +47,7 @@ export const transformElement = (
       height: _h,
       x: _x,
       y: _y,
+      fontSize: fs
     });
   }
 };
@@ -89,50 +90,63 @@ function getScaleInfo(
   pos: Vec2,
   currentElementInfo: any
 ) {
-  // const beforeWidth = Math.sqrt(Math.pow(startPos[0] - _cp[0],2)+Math.pow(startPos[1] - _cp[1],2))
-  // const afterWidth = Math.sqrt(Math.pow(_cp[0] - pos[0],2)+Math.pow(_cp[1] - pos[1],2))
-  // const scale = afterWidth / beforeWidth;
+    
   const disY = pos[1] - startPos[1];
   const disX = pos[0] - startPos[0];
-  let dis = Math.max(disY, disX);
-  const { width, height, x, y } = currentElementInfo;
-  // console.log('scale',scale)
+  const { width, height, x, y, fontSize } = currentElementInfo;
+  let proportion =
+    Math.abs(disY) >= Math.abs(disX)
+      ? (height - disY) / height
+      : (width - disX) / width;
+  proportion = Number(proportion.toFixed(3));
+
   let _w = width;
   let _h = height;
   let _x = x;
   let _y = y;
-
+  let fs = fontSize;
   switch (direction) {
     case SelectEventTypeDir.I:
-      _x = x + dis ;
-      _y = y + dis ;
-      _w = width - dis;
-      _h = height - dis;
+      _w = width * proportion;
+      _h = height * proportion;
+      _x = x + width - _w;
+      _y = y + height - _h;
+      fs = getFonSizeByHeight(_h,1);
       break;
     case SelectEventTypeDir.II:
+      _w = width * proportion;
+      _h = height * proportion;
       _x = x ;
-      _y = y - dis ;
-      _w = width + dis;
-      _h = height + dis;
+      _y = y + height - _h;
+      fs = getFonSizeByHeight(_h,1);
       break;
     case SelectEventTypeDir.III:
+      _w = width * proportion;
+      _h = height * proportion;
       _x = x;
       _y = y;
-      _w = width + dis;
-      _h = height + dis;
+      fs = getFonSizeByHeight(_h,1);
       break;
 
     case SelectEventTypeDir.IV:
-      _x = x - dis ;
+        _w = width * proportion;
+      _h = height * proportion;
+      _x = x + width - _w;
       _y = y ;
-      _w = width + dis;
-      _h = height + dis;
+      fs = getFonSizeByHeight(_h,1);
       break;
   }
+  console.log('fs',fs)
   return {
     _w,
     _h,
     _x,
     _y,
+    fs
   };
+}
+
+
+const getFonSizeByHeight = (height:number,colNum:number)=>{
+    return height/colNum;
 }

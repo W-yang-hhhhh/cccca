@@ -51,7 +51,6 @@ export default class Text extends shapesBase {
   }
   draw(ctx: CanvasRenderingContext2D, oCtx: OffscreenCanvasRenderingContext2D) {
     const { text, x, y, width, height, fill, fontSize, angle,scale } = this._element;
-    
     ctx.save();
     ctx.font = `${fontSize}px 宋体`;
     ctx.fillStyle = fill;
