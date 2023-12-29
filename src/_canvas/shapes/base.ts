@@ -28,8 +28,4 @@ export default class shapesBase implements Shape {
     return this.listeners;
   }
 
-  //渲染选中框
-  renderSelect(){
-    
-  }
 }

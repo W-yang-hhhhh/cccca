@@ -103,7 +103,7 @@ export default class Stage {
     if (textData.elementType === elementType.text) {
       //初始化 w&h
       const _w = getTextWidth(
-        this.osCtx,
+        // this.osCtx,
         textData.text,
         textData.fontSize,
         textData.fontFamily

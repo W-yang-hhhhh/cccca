@@ -1,4 +1,5 @@
 import { idToRgba } from "../helper";
+import { getTextWidth } from "../helper/text";
 import { elementType } from "../types/element";
 import shapesBase from "./base";
 
@@ -46,6 +47,11 @@ export default class Text extends shapesBase {
   changeProperty(property: Partial<textType>) {
     let keyArr = Object.keys(property) as Array<keyof textType>;
     keyArr.forEach((_key) => {
+      if(_key === 'text'){
+        //特殊处理
+        const width = getTextWidth(property[_key] ||'',this._element.fontSize,this._element.fontFamily)
+        this._element.width = width;
+      };
       (this._element[_key] as any) = property[_key];
     });
   }
