@@ -112,6 +112,8 @@ export function canvasGlobalMouseEventHandle(
     isMouseDown = false;
     currentId = "";
     startAngle = 0;
+    eventType = undefined;
+    direction = undefined;
   }
 
   //mouseLeave
