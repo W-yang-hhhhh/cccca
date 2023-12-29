@@ -69,7 +69,7 @@ export function canvasGlobalMouseEventHandle(
     //--under mouseDown
 
     if (isMouseDown) {
-      //拖拽缩放旋转
+      //缩放旋转
       if (eventType && direction) {
         transformElement(
           eventType,
@@ -80,8 +80,6 @@ export function canvasGlobalMouseEventHandle(
           [offsetX, offsetY],
           { angle: startAngle, scale: startScale, ...initData }
         );
-        // prevPointX = offsetX;
-        // prevPointY = offsetY;
         return;
       }
 
@@ -95,6 +93,8 @@ export function canvasGlobalMouseEventHandle(
             y,
           });
         });
+
+        return ;
     }
 
     //--mouseMove
