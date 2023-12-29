@@ -6,6 +6,7 @@ import {
   SelectEventType,
   SelectEventTypeDir,
   getSelectionElementEventType,
+  getSelectionElementEventTypeById,
 } from "./util";
 
 let isMouseDown = false;
@@ -17,8 +18,8 @@ let eventType: undefined | SelectEventType = undefined;
 let direction: undefined | SelectEventTypeDir = undefined;
 
 let startAngle = 0;
-let startScale = [1,1];
-let initData = {x: 0,y:0,width:0,height:0,fontSize:0};
+let startScale = [1, 1];
+let initData = { x: 0, y: 0, width: 0, height: 0, fontSize: 0 };
 export function canvasGlobalMouseEventHandle(
   this: Stage,
   evt: MouseEvent,
@@ -35,10 +36,15 @@ export function canvasGlobalMouseEventHandle(
     //有事件类型特出处理
     if (eventType) {
       getElementById(elements, this.currentSelectId, (element) => {
-        const { angle,scale,x,y,width,height,fontSize } = element.getElementData();
+        const { angle, scale, x, y, width, height, fontSize } =
+          element.getElementData();
         initData = {
-          x,y,width,height,fontSize
-        }
+          x,
+          y,
+          width,
+          height,
+          fontSize,
+        };
         startAngle = angle;
         startScale = scale;
       });
@@ -65,7 +71,6 @@ export function canvasGlobalMouseEventHandle(
     if (isMouseDown) {
       //拖拽缩放旋转
       if (eventType && direction) {
-        
         transformElement(
           eventType,
           direction,
@@ -73,7 +78,7 @@ export function canvasGlobalMouseEventHandle(
           this.currentSelectId,
           [startPointX, startPointY],
           [offsetX, offsetY],
-          { angle: startAngle,scale:startScale, ...initData }
+          { angle: startAngle, scale: startScale, ...initData }
         );
         // prevPointX = offsetX;
         // prevPointY = offsetY;
@@ -93,16 +98,19 @@ export function canvasGlobalMouseEventHandle(
     }
 
     //--mouseMove
-    this.currentSelectId &&
-      getElementById(elements, this.currentSelectId, (element) => {
-        const { direction: _d, eventType: _e } = getSelectionElementEventType(
-          element,
-          { x: offsetX, y: offsetY }
-        );
-        direction = _d;
-        eventType = _e;
-      });
-
+    // this.currentSelectId &&
+    //   getElementById(elements, this.currentSelectId, (element) => {
+    //     const { direction: _d, eventType: _e } = getSelectionElementEventType(
+    //       element,
+    //       { x: offsetX, y: offsetY }
+    //     );
+    //     direction = _d;
+    //     eventType = _e;
+    //   });
+    const { direction: _d, eventType: _e } =
+      getSelectionElementEventTypeById(id);
+    direction = _d;
+    eventType = _e;
     if (this.currentSelectId) {
     }
   }

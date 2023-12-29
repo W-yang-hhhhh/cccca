@@ -8,3 +8,8 @@ export const getTextWidth = (ctx:OffscreenCanvasRenderingContext2D,text:string,f
 }
 
 
+export const getFonSizeByHeight = (height:number,colNum:number)=>{
+    return height/colNum;
+}
+
+

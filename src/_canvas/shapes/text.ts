@@ -67,7 +67,6 @@ export default class Text extends shapesBase {
 
 
     const [r, g, b, a] = idToRgba(this.id);
-    oCtx.clearRect(0, 0, oCtx.canvas.width, oCtx.canvas.height);
     oCtx.save();
     oCtx.font = `${fontSize}px 宋体`;
     oCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;

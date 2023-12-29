@@ -3,6 +3,7 @@ import { SelectEventType, SelectEventTypeDir } from "../event/mouseEvent/util";
 import { Pos, Vec2 } from "../types";
 import { mat2d, mat3 } from "gl-matrix";
 import { AElementType } from "../types/element";
+import { getFonSizeByHeight } from "./text";
 
 export const transformElement = (
   eventType: SelectEventType,
@@ -98,7 +99,8 @@ function getScaleInfo(
     }
   const { width, height, x, y, fontSize } = currentElementInfo;
   let proportion =
-    Math.abs(disY) >= Math.abs(disX)
+    // Math.abs(disY) >= Math.abs(disX)
+    false
       ? (height - disY) / height
       : (width - disX) / width;
   proportion = Number(proportion.toFixed(3));
@@ -152,6 +154,3 @@ function getScaleInfo(
 }
 
 
-const getFonSizeByHeight = (height:number,colNum:number)=>{
-    return height/colNum;
-}
