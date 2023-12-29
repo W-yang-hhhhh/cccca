@@ -62,14 +62,14 @@ export default class Stage {
     this.currentHoverId = "";
     this.isMouseDown = false;
 
-    this.shapes.add('0-0-0-255');
-    this.shapes.add('1-1-1-255')
-    this.shapes.add('2-2-2-255')
-    this.shapes.add('3-3-3-255')
-    this.shapes.add('4-4-4-255')
-    this.shapes.add('5-5-5-255')
-    this.shapes.add('6-6-6-255')
-    this.shapes.add('7-7-7-255')
+    this.shapes.add("0-0-0-255");
+    this.shapes.add("1-1-1-255");
+    this.shapes.add("2-2-2-255");
+    this.shapes.add("3-3-3-255");
+    this.shapes.add("4-4-4-255");
+    this.shapes.add("5-5-5-255");
+    this.shapes.add("6-6-6-255");
+    this.shapes.add("7-7-7-255");
   }
   //鼠标事件
   handleCreator = (type: ActionType) => (evt: MouseEvent) => {
@@ -93,7 +93,7 @@ export default class Stage {
     );
 
     const id = rgbaToId(rgba as [number, number, number, number]);
-    
+
     return this.shapes.has(id) ? id : undefined;
   }
 
@@ -137,14 +137,18 @@ export default class Stage {
 
   render() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.osCtx.clearRect(0, 0, this.osCtx.canvas.width, this.osCtx.canvas.height);
+    this.osCtx.clearRect(
+      0,
+      0,
+      this.osCtx.canvas.width,
+      this.osCtx.canvas.height
+    );
     this.elements.map((item) => {
-      
       //渲染选中框
       if (item.id === this.currentSelectId) {
-        renderSelect(this.ctx,this.osCtx, item);
+        renderSelect(this.ctx, this.osCtx, item);
       }
-      
+
       //渲染Hover
       if (
         item.id === this.currentHoverId &&
@@ -152,7 +156,7 @@ export default class Stage {
       ) {
         renderHover(this.ctx, item);
       }
-      
+
       item?.draw(this.ctx, this.osCtx);
     });
   }
