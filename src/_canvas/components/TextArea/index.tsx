@@ -26,11 +26,12 @@ export const TextAreaComp = (props: Props) => {
   const computed = useMemo(() => {
     return {
       width: `${val.width}px`,
-      height: `${val.height}px`,
+      height: `${val.height + 6}px`,
       left: `${x}px`,
       top: `${y}px`,
       transform: `rotate(${angle / Math.PI * 180}deg)`,
-      font: `${fontSize}px / 1 ${fontFamily}`
+      font: `${fontSize}px / 1 ${fontFamily}`,
+      lineHeight:`${fontSize}px`
     };
   }, [val]);
 
@@ -39,7 +40,7 @@ export const TextAreaComp = (props: Props) => {
     const {value,offsetHeight,offsetWidth,rows,textContent} = e.target;
     console.log('textContent',textContent)
     onblur({
-        height: offsetHeight,
+        height: val.height,
         width: offsetWidth,
         text: value
     })
@@ -51,7 +52,7 @@ export const TextAreaComp = (props: Props) => {
     setVal(pre=>({
         ...pre,
         text: value,
-        height: fontSize * heightLength,
+        height: (fontSize) * heightLength,
         width: getTextWidth(e.target.value,fontSize,fontFamily)
     }));
   }
