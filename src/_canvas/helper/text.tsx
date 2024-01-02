@@ -12,8 +12,12 @@ export const getTextWidth = (
   let OsContext = OsCanvas.getContext(
     "2d"
   ) as OffscreenCanvasRenderingContext2D;
+  const textArr = text.split("\n");
   OsContext.font = `${fontSize}px ${fontFamily}`;
-  const _w = OsContext.measureText(text).width;
+  let maxLengthText = textArr.sort(
+    (a: string, b: string) => b.length - a.length
+  )[0];
+  const _w = OsContext.measureText(maxLengthText).width;
   return _w;
 };
 
@@ -22,56 +26,53 @@ export const getFonSizeByHeight = (height: number, colNum: number) => {
 };
 
 export const TextToEditMode = (elements: AElementType[], id: string) => {
-    console.log('ssssss')
   const currentElement = getElementById(elements, id);
-  const currentElementData = currentElement?.getElementData()
+  const currentElementData = currentElement?.getElementData();
   if (!currentElement || currentElementData?.elementType !== elementType.text) {
     return;
   }
+  currentElement.changeProperty({
+    hidden: true,
+  });
   const { x, y, width, height, angle, text, fontSize, fontFamily } =
-  currentElementData;
+    currentElementData;
 
   const blurEventHandle = getBlurEvent(currentElement);
 
   const props = {
-    x: x + 100,
-    y: y + 100,
+    x: x,
+    y: y,
     w: width,
     h: height,
     angle: angle,
     value: text,
-    fontSize:fontSize,
-    fontFamily:fontFamily,
-    onblur:blurEventHandle
+    fontSize: fontSize,
+    fontFamily: fontFamily,
+    onblur: blurEventHandle,
   };
-  
+
   const div = document.createElement("div");
   div.style.display = "block";
-  div.id = 'globalCanvas'
+  div.id = "globalCanvas";
   document.getElementsByClassName("canvasContainer")[0]?.appendChild(div);
   ReactDOM.render(<TextAreaComp {...props} />, div);
-
-
- 
 };
 
-interface Props{
-    text:string,
-    width:number,
-    height:number,
+interface Props {
+  text: string;
+  width: number;
+  height: number;
 }
 
-const getBlurEvent = (currentElement:AElementType)=>{
-    let _currentElement =currentElement;
+const getBlurEvent = (currentElement: AElementType) => {
+  let _currentElement = currentElement;
 
-    return (props:Props)=>{
-        console.log('props',props)
-        _currentElement.changeProperty(props);
-        let canvas = document.getElementById('globalCanvas') as any;
-        // (canvas as any).style.display = 'none';
-        document.getElementsByClassName("canvasContainer")[0]?.removeChild(canvas);
-    }
-}
-
-
-
+  return (props: Props) => {
+    console.log("props", props);
+    _currentElement.changeProperty(props);
+    let canvas = document.getElementById("globalCanvas") as any;
+    // (canvas as any).style.display = 'none';
+    _currentElement.changeProperty({ hidden: false });
+    document.getElementsByClassName("canvasContainer")[0]?.removeChild(canvas);
+  };
+};

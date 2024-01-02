@@ -18,6 +18,7 @@ interface textType {
   scale:[number, number];
   width: number;
   height: number;
+  hidden: boolean;
 }
 const defaultTextValue = {
   elementType: elementType.text,
@@ -34,6 +35,7 @@ const defaultTextValue = {
   scale:[1, 1] as [number, number],
   width: 0,
   height: 0,
+  hidden: false,
 };
 
 export default class Text extends shapesBase {
@@ -56,7 +58,8 @@ export default class Text extends shapesBase {
     });
   }
   draw(ctx: CanvasRenderingContext2D, oCtx: OffscreenCanvasRenderingContext2D) {
-    const { text, x, y, width, height, fill, fontSize, angle,scale } = this._element;
+    const { text, x, y, width, height, fill, fontSize, angle,scale,hidden } = this._element;
+    if(hidden) return ;
     const textArr = text.split('\n');
     ctx.save();
     ctx.font = `${fontSize}px 宋体`;
