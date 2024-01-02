@@ -8,9 +8,10 @@ interface Props {
   h: number;
   angle: number;
   value: string;
+  font: string;
 }
 export const TextAreaComp = (props: Props) => {
-  const { x, y, w, h, angle,value } = props;
+  const { x, y, w, h, angle,value,font } = props;
   const computed = useMemo(() => {
     return {
       width: `${w}px`,
@@ -18,6 +19,7 @@ export const TextAreaComp = (props: Props) => {
       left: `${x}px`,
       top: `${y}px`,
       transform: `rotate(${angle}deg)`,
+      font: font
     };
   }, [x, y, w, h]);
 

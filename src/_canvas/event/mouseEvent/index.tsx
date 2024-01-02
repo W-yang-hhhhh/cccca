@@ -1,6 +1,7 @@
 import Stage from "../..";
 import { ActionType } from "../../eventSimulator";
 import { getElementById } from "../../helper";
+import { TextToEditMode } from "../../helper/text";
 import { transformElement } from "../../helper/transform";
 import {
   SelectEventType,
@@ -13,7 +14,7 @@ let isMouseDown = false;
 let startPointX = 0;
 let startPointY = 0;
 let currentId = ""; //点击下的 id
-
+let editId = "";
 let eventType: undefined | SelectEventType = undefined;
 let direction: undefined | SelectEventTypeDir = undefined;
 
@@ -134,6 +135,10 @@ export function canvasGlobalMouseEventHandle(
   //dbClick 
   if(type === ActionType.DbClick){
     console.log('dbclock',id);
+    if(editId != id){
+      editId = id;
+      TextToEditMode(elements,id);
+    }
     
   }
 }
