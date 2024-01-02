@@ -15,7 +15,9 @@ export enum SelectEventTypeDir {
 }
 const HOT_RANGE_SCALE = 4;
 const HOT_RANGE_ROTATE = 22;
-
+/**
+ * [*****暂时废弃]
+ */
 export const getSelectionElementEventType = (
   element: AElementType,
   pos: Pos
@@ -114,37 +116,37 @@ export const getSelectionElementEventTypeById = (id: string) => {
   let eventType = undefined;
   switch (id) {
     case "0-0-0-255":
-        direction = SelectEventTypeDir.I;
-        eventType = SelectEventType.scale;
+      direction = SelectEventTypeDir.I;
+      eventType = SelectEventType.scale;
       break;
     case "1-1-1-255":
-        direction = SelectEventTypeDir.II;
-        eventType = SelectEventType.scale;
+      direction = SelectEventTypeDir.II;
+      eventType = SelectEventType.scale;
       break;
     case "2-2-2-255":
-        direction = SelectEventTypeDir.III;
-        eventType = SelectEventType.scale;
+      direction = SelectEventTypeDir.III;
+      eventType = SelectEventType.scale;
       break;
     case "3-3-3-255":
       direction = SelectEventTypeDir.IV;
-        eventType = SelectEventType.scale;  
-    break;
+      eventType = SelectEventType.scale;
+      break;
     case "4-4-4-255":
       direction = SelectEventTypeDir.I;
-        eventType = SelectEventType.rotate;  
-    break;
+      eventType = SelectEventType.rotate;
+      break;
     case "5-5-5-255":
       direction = SelectEventTypeDir.II;
-        eventType = SelectEventType.rotate;  
-    break;
+      eventType = SelectEventType.rotate;
+      break;
     case "6-6-6-255":
       direction = SelectEventTypeDir.III;
-        eventType = SelectEventType.rotate;  
-    break;
+      eventType = SelectEventType.rotate;
+      break;
     case "7-7-7-255":
       direction = SelectEventTypeDir.IV;
-        eventType = SelectEventType.rotate;  
-    break;
+      eventType = SelectEventType.rotate;
+      break;
   }
 
   if (eventType === SelectEventType.scale) {
@@ -157,6 +159,6 @@ export const getSelectionElementEventTypeById = (id: string) => {
 
   return {
     direction,
-    eventType
-  }
+    eventType,
+  };
 };

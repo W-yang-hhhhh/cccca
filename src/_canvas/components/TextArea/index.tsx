@@ -14,53 +14,53 @@ interface Props {
   onblur: any;
 }
 export const TextAreaComp = (props: Props) => {
-  const { x, y, w, h, angle,value,fontSize,fontFamily, onblur } = props;
-  const [val, setVal]= useState({
+  const { x, y, w, h, angle, value, fontSize, fontFamily, onblur } = props;
+  const [val, setVal] = useState({
     text: value,
     height: h,
     width: w,
   });
 
-
- 
   const computed = useMemo(() => {
     return {
       width: `${val.width}px`,
       height: `${val.height + 6}px`,
       left: `${x}px`,
       top: `${y}px`,
-      transform: `rotate(${angle / Math.PI * 180}deg)`,
+      transform: `rotate(${(angle / Math.PI) * 180}deg)`,
       font: `${fontSize}px / 1 ${fontFamily}`,
-      lineHeight:`${fontSize}px`
+      lineHeight: `${fontSize}px`,
     };
   }, [val]);
 
-  const onBlurHandle = (e:any)=>{
-    console.log('e',e)
-    const {value,offsetHeight,offsetWidth,rows,textContent} = e.target;
-    console.log('textContent',textContent)
+  const onBlurHandle = (e: any) => {
+    console.log("e", e);
+    const { value, offsetHeight, offsetWidth, rows, textContent } = e.target;
+    console.log("textContent", textContent);
     onblur({
-        height: val.height,
-        width: offsetWidth,
-        text: value
-    })
-  }
-  const onChangeHandle = (e:any)=>{
-    const {value,offsetHeight,offsetWidth,rows} = e.target;
-    console.log('changeEvent',e);
-    const heightLength = value.split('\n').length
-    setVal(pre=>({
-        ...pre,
-        text: value,
-        height: (fontSize) * heightLength,
-        width: getTextWidth(e.target.value,fontSize,fontFamily)
+      height: val.height,
+      width: offsetWidth,
+      text: value,
+    });
+  };
+  const onChangeHandle = (e: any) => {
+    const { value, offsetHeight, offsetWidth, rows } = e.target;
+    console.log("changeEvent", e);
+    const heightLength = value.split("\n").length;
+    setVal((pre) => ({
+      ...pre,
+      text: value,
+      height: fontSize * heightLength,
+      width: getTextWidth(e.target.value, fontSize, fontFamily),
     }));
-  }
+  };
 
   return (
     <TextAreaCss
       dir="auto"
-      onFocus={(e)=>{e.target.select()}}
+      onFocus={(e) => {
+        e.target.select();
+      }}
       autoFocus
       tabIndex={0}
       value={val.text}
