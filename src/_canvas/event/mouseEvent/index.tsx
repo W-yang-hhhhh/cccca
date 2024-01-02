@@ -21,6 +21,10 @@ let direction: undefined | SelectEventTypeDir = undefined;
 let startAngle = 0;
 let startScale = [1, 1];
 let initData = { x: 0, y: 0, width: 0, height: 0, fontSize: 0 };
+
+//双击延迟
+let lastTime:any = null; // 记录上一次点击时间
+const doubleClickDelay = 300;
 export function canvasGlobalMouseEventHandle(
   this: Stage,
   evt: MouseEvent,
@@ -134,11 +138,18 @@ export function canvasGlobalMouseEventHandle(
 
   //dbClick 
   if(type === ActionType.DbClick){
-    console.log('dbclock',id);
-    if(editId != id){
-      editId = id;
-      TextToEditMode(elements,id);
+
+    const currentTime = new Date().getTime();
+    
+    if (lastTime && currentTime - lastTime < doubleClickDelay) {
+        console.log("这是最后一次点击");
+        TextToEditMode(elements,id);
+        // 如果需要执行其他操作，可以将相应的代码放在此处
+    } else {
+        console.log("不是最后一次点击");
     }
+    
+    lastTime = currentTime;
     
   }
 }

@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import styled from "styled-components";
+import { getTextWidth } from "../../helper/text";
 
 interface Props {
   x: number;
@@ -8,28 +9,58 @@ interface Props {
   h: number;
   angle: number;
   value: string;
-  font: string;
+  fontSize: number;
+  fontFamily: string;
+  onblur: any;
 }
 export const TextAreaComp = (props: Props) => {
-  const { x, y, w, h, angle,value,font } = props;
+  const { x, y, w, h, angle,value,fontSize,fontFamily, onblur } = props;
+  const [val, setVal]= useState({
+    text: value,
+    height: h,
+    width: w,
+  });
   const computed = useMemo(() => {
     return {
-      width: `${w}px`,
-      height: `${h}px`,
+      width: `${val.width}px`,
+      height: `${val.height}px`,
       left: `${x}px`,
       top: `${y}px`,
       transform: `rotate(${angle}deg)`,
-      font: font
+      font: `${fontSize}px / 1 ${fontFamily}`
     };
-  }, [x, y, w, h]);
+  }, [val]);
+
+  const onBlurHandle = (e:any)=>{
+    console.log('e',e)
+    const {value,offsetHeight,offsetWidth,rows} = e.target;
+    onblur({
+        // height:offsetHeight,
+        width: offsetWidth,
+        text: value
+
+    })
+  }
+  const onChangeHandle = (e:any)=>{
+    const {value,offsetHeight,offsetWidth,rows} = e.target;
+    console.log('changeEvent',offsetHeight * rows);
+    setVal(pre=>({
+        ...pre,
+        text:e.target.value,
+        height: offsetHeight * rows,
+        width:getTextWidth(e.target.value,fontSize,fontFamily)
+    }));
+  }
 
   return (
     <TextAreaCss
       dir="auto"
       tabIndex={0}
-      value={value}
+      value={val.text}
       style={computed}
       className="a1TextArea"
+      onBlur={onBlurHandle}
+      onChange={onChangeHandle}
     ></TextAreaCss>
   );
 };
