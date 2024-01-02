@@ -57,6 +57,7 @@ export default class Text extends shapesBase {
   }
   draw(ctx: CanvasRenderingContext2D, oCtx: OffscreenCanvasRenderingContext2D) {
     const { text, x, y, width, height, fill, fontSize, angle,scale } = this._element;
+    const textArr = text.split('\n');
     ctx.save();
     ctx.font = `${fontSize}px 宋体`;
     ctx.fillStyle = fill;
@@ -65,7 +66,10 @@ export default class Text extends shapesBase {
     ctx.translate(x + width/2,y+height/2);
     ctx.rotate(angle);
     // ctx.scale(scale[0],scale[1])
-    ctx.fillText(text,-width/2,-height/2);
+    textArr.forEach((item,index)=>{
+      ctx.fillText(item,-width/2,-height/2 + fontSize * index);
+    })
+    
     ctx.restore();
 
 

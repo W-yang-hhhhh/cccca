@@ -33,22 +33,22 @@ export const TextAreaComp = (props: Props) => {
 
   const onBlurHandle = (e:any)=>{
     console.log('e',e)
-    const {value,offsetHeight,offsetWidth,rows} = e.target;
+    const {value,offsetHeight,offsetWidth,rows,textContent} = e.target;
+    console.log('textContent',textContent)
     onblur({
         height: val.height,
         width: offsetWidth,
         text: value
-
     })
   }
   const onChangeHandle = (e:any)=>{
     const {value,offsetHeight,offsetWidth,rows} = e.target;
-    console.log('changeEvent',offsetHeight * rows);
+    console.log('changeEvent',e);
     setVal(pre=>({
         ...pre,
-        text:e.target.value,
+        text: value,
         height: offsetHeight * rows,
-        width:getTextWidth(e.target.value,fontSize,fontFamily)
+        width: getTextWidth(e.target.value,fontSize,fontFamily)
     }));
   }
 

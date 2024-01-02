@@ -47,6 +47,7 @@ export const TextToEditMode = (elements: AElementType[], id: string) => {
   
   const div = document.createElement("div");
   div.style.display = "block";
+  div.id = 'globalCanvas'
   document.getElementsByClassName("canvasContainer")[0]?.appendChild(div);
   ReactDOM.render(<TextAreaComp {...props} />, div);
 
@@ -65,8 +66,10 @@ const getBlurEvent = (currentElement:AElementType)=>{
 
     return (props:Props)=>{
         console.log('props',props)
-        _currentElement.changeProperty(props)
-
+        _currentElement.changeProperty(props);
+        let canvas = document.getElementById('globalCanvas') as any;
+        // (canvas as any).style.display = 'none';
+        document.getElementsByClassName("canvasContainer")[0]?.removeChild(canvas);
     }
 }
 
