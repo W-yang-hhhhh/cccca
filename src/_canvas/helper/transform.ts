@@ -24,7 +24,7 @@ export const transformElement = (
   } = initData;
   const currentElement = getElementById(elementArr, curId);
   if (!currentElement) return;
-  const { angle: _a, x, y, fontSize } = currentElement.getElementData();
+  const { angle: _a, x, y, fontSize, text} = currentElement.getElementData();
   const _cp = getElementCenterPoint(currentElement);
   if (eventType === SelectEventType.rotate) {
     //旋转
@@ -40,9 +40,10 @@ export const transformElement = (
       y: startY,
       width,
       height,
-      fontSize
+      fontSize,
+      text
     });
-
+    console.log('scale',fs)
     currentElement.changeProperty({
       width: _w,
       height: _h,
@@ -97,7 +98,8 @@ function getScaleInfo(
         disY = -disY;
         disX = -disX;
     }
-  const { width, height, x, y, fontSize } = currentElementInfo;
+  const { width, height, x, y, fontSize,text } = currentElementInfo;
+  let rows = text.split('\n').length;
   let proportion =
     // Math.abs(disY) >= Math.abs(disX)
     false
@@ -118,21 +120,21 @@ function getScaleInfo(
       _h = height * proportion;
       _x = x + width - _w;
       _y = y + height - _h;
-      fs = getFonSizeByHeight(_h,1);
+      fs = getFonSizeByHeight(_h,rows);
       break;
     case SelectEventTypeDir.II:
       _w = width * proportion;
       _h = height * proportion;
       _x = x ;
       _y = y + height - _h;
-      fs = getFonSizeByHeight(_h,1);
+      fs = getFonSizeByHeight(_h,rows);
       break;
     case SelectEventTypeDir.III:
       _w = width * proportion;
       _h = height * proportion;
       _x = x;
       _y = y;
-      fs = getFonSizeByHeight(_h,1);
+      fs = getFonSizeByHeight(_h,rows);
       break;
 
     case SelectEventTypeDir.IV:
@@ -140,7 +142,7 @@ function getScaleInfo(
       _h = height * proportion;
       _x = x + width - _w;
       _y = y ;
-      fs = getFonSizeByHeight(_h,1);
+      fs = getFonSizeByHeight(_h,rows);
       break;
   }
 
