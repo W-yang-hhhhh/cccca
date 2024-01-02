@@ -53,16 +53,19 @@ export default class Text extends shapesBase {
         //特殊处理
         const width = getTextWidth(property[_key] ||'',this._element.fontSize,this._element.fontFamily)
         this._element.width = width;
-      };
+      }else if(_key === 'fontFamily'){
+        const width = getTextWidth(this._element.text,this._element.fontSize,property[_key] || this._element.fontFamily)
+        this._element.width = width;
+      }
       (this._element[_key] as any) = property[_key];
     });
   }
   draw(ctx: CanvasRenderingContext2D, oCtx: OffscreenCanvasRenderingContext2D) {
-    const { text, x, y, width, height, fill, fontSize, angle,scale,hidden } = this._element;
+    const { text, x, y, width, height, fill, fontSize, angle,scale,hidden,fontFamily } = this._element;
     if(hidden) return ;
     const textArr = text.split('\n');
     ctx.save();
-    ctx.font = `${fontSize}px 宋体`;
+    ctx.font = `${fontSize}px ${fontFamily}`;
     ctx.fillStyle = fill;
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
@@ -81,7 +84,7 @@ export default class Text extends shapesBase {
 
     const [r, g, b, a] = idToRgba(this.id);
     oCtx.save();
-    oCtx.font = `${fontSize}px 宋体`;
+    oCtx.font = `${fontSize}px ${fontFamily}`;
     oCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
     oCtx.textAlign = "left";
     oCtx.textBaseline = "top";

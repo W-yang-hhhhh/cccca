@@ -5,6 +5,7 @@ import "./App.css";
 import Stage from "./_canvas";
 import Text from "./_canvas/shapes/text";
 import { EventNames } from "./_canvas/types";
+import { fontFamilyArr } from "./assets/font";
 function App() {
   const canvasRef = useRef(null);
   const [textValue,setTextValue] =useState('即使设计');
@@ -44,6 +45,13 @@ function App() {
       text: val
     })
   }
+
+  const changeFontFamily = (val:string)=>{
+    let id = stageRef.current?.getCurrentSelectId();
+    stageRef.current.change(id,{
+      fontFamily: val
+    })
+  }
   return (
     <>
       <div id="app" className="app">
@@ -53,6 +61,13 @@ function App() {
         <div className="toolbar">
           <input ref={inputRef} type="text" value={textValue} onChange={e=>setTextValue(e.target.value)} />
           <button onClick={createTextHandle}>create</button>
+
+
+          <select name="fontFamily" id="fontFamily" onChange={e=>changeFontFamily(e.target.value)}>
+            {fontFamilyArr.map(item=>{
+              return <option key={item} value={item}>{item}</option>
+            })}
+          </select>
         </div>
       </div>
     </>
