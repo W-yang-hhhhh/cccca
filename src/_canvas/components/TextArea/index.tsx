@@ -93,6 +93,7 @@ const TextAreaCss = styled.textarea`
   vertical-align: top;
   color: rgb(30, 30, 30);
   opacity: 1;
+  border:1px solid transparent;
   /* filter: var(--theme-filter); */
   /* max-height: 1602.7px; */
 `;
