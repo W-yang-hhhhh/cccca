@@ -29,7 +29,7 @@ export const TextAreaComp = (props: Props) => {
       height: `${val.height}px`,
       left: `${x}px`,
       top: `${y}px`,
-      transform: `rotate(${angle}deg)`,
+      transform: `rotate(${angle / Math.PI * 180}deg)`,
       font: `${fontSize}px / 1 ${fontFamily}`
     };
   }, [val]);
