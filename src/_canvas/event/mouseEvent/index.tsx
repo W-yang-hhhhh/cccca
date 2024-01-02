@@ -130,4 +130,10 @@ export function canvasGlobalMouseEventHandle(
     isMouseDown = false;
     currentId = "";
   }
+
+  //dbClick 
+  if(type === ActionType.DbClick){
+    console.log('dbclock',id);
+    
+  }
 }

@@ -55,6 +55,7 @@ export default class Stage {
       "mouseout",
       this.handleCreator(ActionType.Leave)
     );
+    this.canvas.addEventListener('dblclick',this.handleCreator(ActionType.DbClick))
 
     this.shapes = new Set();
     this.eventSimulator = new EventSimulator();
