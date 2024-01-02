@@ -59,6 +59,7 @@ export const TextAreaComp = (props: Props) => {
   return (
     <TextAreaCss
       dir="auto"
+      onFocus={(e)=>{e.target.select()}}
       autoFocus
       tabIndex={0}
       value={val.text}
