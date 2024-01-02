@@ -35,7 +35,7 @@ export const TextAreaComp = (props: Props) => {
     console.log('e',e)
     const {value,offsetHeight,offsetWidth,rows} = e.target;
     onblur({
-        // height:offsetHeight,
+        height: val.height,
         width: offsetWidth,
         text: value
 
