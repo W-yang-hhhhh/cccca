@@ -6,7 +6,8 @@ const POINT_SIZE = 8;
 const POINT_SIZE_OFFSET = POINT_SIZE / 2
 export const renderSelect = (ctx: CanvasRenderingContext2D, osCtx:OffscreenCanvasRenderingContext2D, data: Text) => {
   const _data = data.getElementData();
-  const { width, height, x, y, angle, scale  } = _data;
+  const { width, height, x, y, angle, scale, hidden  } = _data;
+  if(hidden) return ;
   // let width = _w * scale[0];
   // let height = _h * scale[1];
   ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);

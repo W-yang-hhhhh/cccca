@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { getTextWidth } from "../../helper/text";
 
@@ -20,6 +20,9 @@ export const TextAreaComp = (props: Props) => {
     height: h,
     width: w,
   });
+
+
+ 
   const computed = useMemo(() => {
     return {
       width: `${val.width}px`,
@@ -36,7 +39,7 @@ export const TextAreaComp = (props: Props) => {
     const {value,offsetHeight,offsetWidth,rows,textContent} = e.target;
     console.log('textContent',textContent)
     onblur({
-        height: val.height,
+        height: offsetHeight,
         width: offsetWidth,
         text: value
     })
@@ -44,10 +47,11 @@ export const TextAreaComp = (props: Props) => {
   const onChangeHandle = (e:any)=>{
     const {value,offsetHeight,offsetWidth,rows} = e.target;
     console.log('changeEvent',e);
+    const heightLength = value.split('\n').length
     setVal(pre=>({
         ...pre,
         text: value,
-        height: offsetHeight * rows,
+        height: fontSize * heightLength,
         width: getTextWidth(e.target.value,fontSize,fontFamily)
     }));
   }
@@ -55,6 +59,7 @@ export const TextAreaComp = (props: Props) => {
   return (
     <TextAreaCss
       dir="auto"
+      autoFocus
       tabIndex={0}
       value={val.text}
       style={computed}
