@@ -90,7 +90,7 @@ const TextAreaCss = styled.textarea`
   box-sizing: content-box;
   /* font: 36px / 1.25 Virgil, Segoe UI Emoji; */
   text-align: left;
-  vertical-align: top;
+  vertical-align: text-top;
   color: rgb(30, 30, 30);
   opacity: 1;
   border:1px solid transparent;
