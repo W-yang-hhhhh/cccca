@@ -3,10 +3,11 @@
   width: 400px;
   height: 400px;
   border: 1px solid #000;
-  
+  display: block;
 }
 
 .canvasContainer{
   margin: 100px auto;
   position: relative;
+  overflow: hidden;
 }

@@ -71,6 +71,8 @@ export const TextAreaComp = (props: Props) => {
       style={computed}
       className="a1TextArea"
       onBlur={onBlurHandle}
+      autoCorrect="off"
+      spellCheck="false"
       onChange={onChangeHandle}
     ></TextAreaCss>
   );
@@ -78,7 +80,7 @@ export const TextAreaComp = (props: Props) => {
 
 const TextAreaCss = styled.textarea`
   position: absolute;
-  display: inline-block;
+  display: block;
   min-height: 1em;
   backface-visibility: hidden;
   margin: 0px;

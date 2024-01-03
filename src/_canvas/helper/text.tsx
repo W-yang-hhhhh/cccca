@@ -82,16 +82,23 @@ const getBlurEvent = (currentElement: AElementType) => {
 
 const getMaxTextAreaWidth = (context:any,currentElement: AElementType)=>{
     const {x,width,angle} = currentElement.getElementData();
+    
     const canvasWidth = parseInt(context.ctx.canvas.style.width);
-    console.log('xxxxx',x)
+    if(x<0){
+        return width + x
+    }
     const cosW = (canvasWidth - x) 
     console.log('canvasWidth',cosW)
     return cosW
 }
 
 const getMaxTextAreaHeight = (context:any,currentElement: AElementType)=>{
-    const {y,height,angle} = currentElement.getElementData();
-    const canvasWidth = parseInt(context.ctx.canvas.style.width);
-    const cosH = (canvasWidth - y) 
+    const {y,height,width,angle} = currentElement.getElementData();
+    const canvasHeight = parseInt(context.ctx.canvas.style.height);
+    if(y<0){
+        return height + y
+    }
+    const _y = y - (width/ 2) * Math.cos(angle)
+    const cosH = (canvasHeight - _y) 
     return cosH
 }
