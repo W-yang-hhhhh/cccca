@@ -24,7 +24,7 @@ export const transformElement = (
   } = initData;
   const currentElement = getElementById(elementArr, curId);
   if (!currentElement) return;
-  const { angle: _a, x, y, fontSize, text} = currentElement.getElementData();
+  const { angle: _a, x, y, fontSize, text } = currentElement.getElementData();
   const _cp = getElementCenterPoint(currentElement);
   if (eventType === SelectEventType.rotate) {
     //旋转
@@ -41,15 +41,14 @@ export const transformElement = (
       width,
       height,
       fontSize,
-      text
+      text,
     });
-    console.log('scale',fs)
     currentElement.changeProperty({
       width: _w,
       height: _h,
       x: _x,
       y: _y,
-      fontSize: fs
+      fontSize: fs,
     });
   }
 };
@@ -94,19 +93,20 @@ function getScaleInfo(
 ) {
   let disY = pos[1] - startPos[1];
   let disX = pos[0] - startPos[0];
-    if(direction === SelectEventTypeDir.II || direction === SelectEventTypeDir.III ){
-        disY = -disY;
-        disX = -disX;
-    }
-  const { width, height, x, y, fontSize,text } = currentElementInfo;
-  let rows = text.split('\n').length;
+  if (
+    direction === SelectEventTypeDir.II ||
+    direction === SelectEventTypeDir.III
+  ) {
+    disY = -disY;
+    disX = -disX;
+  }
+  const { width, height, x, y, fontSize, text } = currentElementInfo;
+  let rows = text.split("\n").length;
   let proportion =
     // Math.abs(disY) >= Math.abs(disX)
-    false
-      ? (height - disY) / height
-      : (width - disX) / width;
+    false ? (height - disY) / height : (width - disX) / width;
   proportion = Number(proportion.toFixed(3));
-  if(proportion < 0.5){
+  if (proportion < 0.5) {
     proportion = 0.5;
   }
   let _w = width;
@@ -120,29 +120,29 @@ function getScaleInfo(
       _h = height * proportion;
       _x = x + width - _w;
       _y = y + height - _h;
-      fs = getFonSizeByHeight(_h,rows);
+      fs = getFonSizeByHeight(_h, rows);
       break;
     case SelectEventTypeDir.II:
       _w = width * proportion;
       _h = height * proportion;
-      _x = x ;
+      _x = x;
       _y = y + height - _h;
-      fs = getFonSizeByHeight(_h,rows);
+      fs = getFonSizeByHeight(_h, rows);
       break;
     case SelectEventTypeDir.III:
       _w = width * proportion;
       _h = height * proportion;
       _x = x;
       _y = y;
-      fs = getFonSizeByHeight(_h,rows);
+      fs = getFonSizeByHeight(_h, rows);
       break;
 
     case SelectEventTypeDir.IV:
-        _w = width * proportion;
+      _w = width * proportion;
       _h = height * proportion;
       _x = x + width - _w;
-      _y = y ;
-      fs = getFonSizeByHeight(_h,rows);
+      _y = y;
+      fs = getFonSizeByHeight(_h, rows);
       break;
   }
 
@@ -151,8 +151,6 @@ function getScaleInfo(
     _h,
     _x,
     _y,
-    fs
+    fs,
   };
 }
-
-
