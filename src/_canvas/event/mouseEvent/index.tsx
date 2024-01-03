@@ -143,7 +143,7 @@ export function canvasGlobalMouseEventHandle(
     
     if (lastTime && currentTime - lastTime < doubleClickDelay) {
         console.log("这是最后一次点击");
-        TextToEditMode(elements,id);
+        TextToEditMode.call(this,elements,id);
         // 如果需要执行其他操作，可以将相应的代码放在此处
     } else {
         console.log("不是最后一次点击");

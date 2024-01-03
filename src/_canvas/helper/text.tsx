@@ -25,7 +25,7 @@ export const getFonSizeByHeight = (height: number, colNum: number) => {
   return height / colNum;
 };
 
-export const TextToEditMode = (elements: AElementType[], id: string) => {
+export const TextToEditMode = function(this: any, elements: AElementType[], id: string)  {
   const currentElement = getElementById(elements, id);
   const currentElementData = currentElement?.getElementData();
   if (!currentElement || currentElementData?.elementType !== elementType.text) {
@@ -38,7 +38,8 @@ export const TextToEditMode = (elements: AElementType[], id: string) => {
     currentElementData;
 
   const blurEventHandle = getBlurEvent(currentElement);
-
+  const maxWidth = getMaxTextAreaWidth(this,currentElement); 
+  const maxHeight = getMaxTextAreaHeight(this,currentElement); 
   const props = {
     x: x,
     y: y,
@@ -48,6 +49,8 @@ export const TextToEditMode = (elements: AElementType[], id: string) => {
     value: text,
     fontSize: fontSize,
     fontFamily: fontFamily,
+    maxWidth: maxWidth,
+    maxHeight: maxHeight,
     onblur: blurEventHandle,
   };
 
@@ -71,8 +74,24 @@ const getBlurEvent = (currentElement: AElementType) => {
     console.log("props", props);
     _currentElement.changeProperty(props);
     let canvas = document.getElementById("globalCanvas") as any;
-    // (canvas as any).style.display = 'none';
     _currentElement.changeProperty({ hidden: false });
     document.getElementsByClassName("canvasContainer")[0]?.removeChild(canvas);
   };
 };
+
+
+const getMaxTextAreaWidth = (context:any,currentElement: AElementType)=>{
+    const {x,width,angle} = currentElement.getElementData();
+    const canvasWidth = parseInt(context.ctx.canvas.style.width);
+    console.log('xxxxx',x)
+    const cosW = (canvasWidth - x) 
+    console.log('canvasWidth',cosW)
+    return cosW
+}
+
+const getMaxTextAreaHeight = (context:any,currentElement: AElementType)=>{
+    const {y,height,angle} = currentElement.getElementData();
+    const canvasWidth = parseInt(context.ctx.canvas.style.width);
+    const cosH = (canvasWidth - y) 
+    return cosH
+}

@@ -12,9 +12,11 @@ interface Props {
   fontSize: number;
   fontFamily: string;
   onblur: any;
+  maxWidth: number;
+  maxHeight: number;
 }
 export const TextAreaComp = (props: Props) => {
-  const { x, y, w, h, angle, value, fontSize, fontFamily, onblur } = props;
+  const { x, y, w, h, angle, value, fontSize, fontFamily, onblur, maxWidth, maxHeight } = props;
   const [val, setVal] = useState({
     text: value,
     height: h,
@@ -30,6 +32,8 @@ export const TextAreaComp = (props: Props) => {
       transform: `rotate(${(angle / Math.PI) * 180}deg)`,
       font: `${fontSize}px / 1 ${fontFamily}`,
       lineHeight: `${fontSize}px`,
+      maxWidth: `${maxWidth}px`,
+      maxHeight: `${maxHeight}px`
     };
   }, [val]);
 
