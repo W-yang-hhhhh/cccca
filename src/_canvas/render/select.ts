@@ -16,7 +16,7 @@ export const renderSelect = (ctx: CanvasRenderingContext2D, osCtx:OffscreenCanva
   ctx.rotate(angle);
   // ctx.scale(scale[0],scale[1])
   ctx.beginPath();
-  ctx.strokeStyle = "rgb(29,128,255)";
+  ctx.strokeStyle = "rgba(55, 212, 126, 1)";
   ctx.fillStyle = "#fff";
   ctx.lineWidth = 2;
   ctx.rect(-width/2, -height/2, width, height);
