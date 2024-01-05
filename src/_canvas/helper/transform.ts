@@ -1,7 +1,7 @@
 import { getElementById } from ".";
 import { SelectEventType, SelectEventTypeDir } from "../event/mouseEvent/util";
 import { Pos, Vec2 } from "../types";
-import { mat2d, mat3 } from "gl-matrix";
+import { mat2d, mat3, vec3 } from "gl-matrix";
 import { AElementType } from "../types/element";
 import { getFonSizeByHeight } from "./text";
 
@@ -42,6 +42,7 @@ export const transformElement = (
       height,
       fontSize,
       text,
+      angle:_a
     });
     currentElement.changeProperty({
       width: _w,
@@ -79,6 +80,13 @@ function getRotateAngle(centerPoint: Vec2, startPoint: Vec2, endPoint: Vec2) {
 
 function getElementCenterPoint(element: AElementType): Vec2 {
   const { x, y, width, height } = element.getElementData();
+  // const px = x + width / 2;
+  // const py = y + height / 2;
+  // return [px, py];
+  return getCp(x, y, width, height)
+}
+
+function getCp( x:number, y:number, width:number, height:number): Vec2{
   const px = x + width / 2;
   const py = y + height / 2;
   return [px, py];
@@ -87,10 +95,23 @@ function getElementCenterPoint(element: AElementType): Vec2 {
 function getScaleInfo(
   direction: SelectEventTypeDir,
   _cp: Vec2,
-  startPos: Vec2,
-  pos: Vec2,
+  _startPos: Vec2,
+  _pos: Vec2,
   currentElementInfo: any
 ) {
+
+  const { width, height, x, y, fontSize, text, angle } = currentElementInfo;
+
+  const vec = vec3.create();
+  let _cVec = vec3.fromValues(..._cp,1)
+  let sVec = vec3.fromValues(..._startPos,1)
+  let pVec = vec3.fromValues(..._pos,1)
+
+
+  let startPos = vec3.rotateZ(vec,sVec,_cVec,-angle  ).slice(0,2)
+  let pos = vec3.rotateZ(vec,pVec,_cVec,-angle ).slice(0,2)
+  console.log('startPos2',startPos)
+  // console.log(startPos,pos)
   let disY = pos[1] - startPos[1];
   let disX = pos[0] - startPos[0];
   if (
@@ -100,12 +121,13 @@ function getScaleInfo(
     disY = -disY;
     disX = -disX;
   }
-  const { width, height, x, y, fontSize, text } = currentElementInfo;
+  
   let rows = text.split("\n").length;
   let proportion =
-    // Math.abs(disY) >= Math.abs(disX)
-    false ? (height - disY) / height : (width - disX) / width;
+  // Math.abs(disX) / Math.abs(disY) < width / height
+     false? (height - disY) / height : (width - disX) / width;
   proportion = Number(proportion.toFixed(3));
+  
   if (proportion < 0.5) {
     proportion = 0.5;
   }
@@ -118,34 +140,39 @@ function getScaleInfo(
     case SelectEventTypeDir.I:
       _w = width * proportion;
       _h = height * proportion;
-      _x = x + width - _w;
-      _y = y + height - _h;
+      let [dx1,dy1] = getScaleAfterOffset(x,y,width,height,_w,_h,angle)
+      _x = x + width - _w - dx1;
+      _y = y + height - _h - dy1;
       fs = getFonSizeByHeight(_h, rows);
       break;
     case SelectEventTypeDir.II:
       _w = width * proportion;
       _h = height * proportion;
-      _x = x;
-      _y = y + height - _h;
+      let [dx2,dy2] = getScaleAfterOffset2(x,y,width,height,_w,_h,angle)
+      _x = x + dx2;
+      _y = y + dy2;
       fs = getFonSizeByHeight(_h, rows);
       break;
     case SelectEventTypeDir.III:
       _w = width * proportion;
       _h = height * proportion;
-      _x = x;
-      _y = y;
+
+      let [dx3,dy3] = getScaleAfterOffset(x,y,width,height,_w,_h,angle)
+      _x = x +dx3;
+      _y = y +dy3;
       fs = getFonSizeByHeight(_h, rows);
       break;
 
     case SelectEventTypeDir.IV:
       _w = width * proportion;
       _h = height * proportion;
-      _x = x + width - _w;
-      _y = y;
+      let [dx4,dy4] = getScaleAfterOffset2(x,y,width,height,_w,_h,angle,'IV')
+      _x = x + dx4;
+      _y = y + dy4;
       fs = getFonSizeByHeight(_h, rows);
       break;
   }
-
+  console.log('proportion',proportion,_x,_y)
   return {
     _w,
     _h,
@@ -153,4 +180,41 @@ function getScaleInfo(
     _y,
     fs,
   };
+}
+
+const getScaleAfterOffset = (x:number,y:number,w:number,h:number,w1:number,h1:number,angle:number)=>{
+
+  let originCPoint = getCp(x,y,w,h);
+  let newCPoint = getCp(x,y,w1,h1);
+
+  let a = getRotateAfterPos(angle,[x,y],originCPoint)
+  let b = getRotateAfterPos(angle,[x,y],newCPoint)
+  return [a[0]-b[0],a[1] - b[1]];
+
+}
+
+const getScaleAfterOffset2 = (x:number,y:number,w:number,h:number,w1:number,h1:number,angle:number,dir?:string)=>{
+
+  let originCPoint = getCp(x,y,w,h);
+  let newCPoint = getCp(x,y,w1,h1);
+
+  let a = getRotateAfterPos(angle,[x,y+h],originCPoint)
+  let b = getRotateAfterPos(angle,[x,y+h1],newCPoint)
+
+  if(dir === 'IV'){
+    a = getRotateAfterPos(angle,[x+w,y],originCPoint)
+    b = getRotateAfterPos(angle,[x+w1,y],newCPoint)
+  }
+  return [a[0]-b[0],a[1] - b[1]];
+}
+
+
+const getRotateAfterPos = (angle:number,point:Vec2,cp:Vec2)=>{
+  const vec = vec3.create();
+  let _cVec = vec3.fromValues(...cp,1);
+  let pVec = vec3.fromValues(...point,1);
+
+
+  let startPos = vec3.rotateZ(vec,pVec,_cVec,angle).slice(0,2);
+  return startPos;
 }
