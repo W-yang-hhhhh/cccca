@@ -108,7 +108,7 @@ function getScaleInfo(
 
   let startPos = vec3.rotateZ(vec, sVec, _cVec, -angle).slice(0, 2);
   let pos = vec3.rotateZ(vec, pVec, _cVec, -angle).slice(0, 2);
-  console.log("startPos2", startPos);
+  
   // console.log(startPos,pos)
   let disY = pos[1] - startPos[1];
   let disX = pos[0] - startPos[0];
@@ -179,7 +179,7 @@ function getScaleInfo(
       fs = getFonSizeByHeight(_h, rows);
       break;
   }
-  console.log("proportion", proportion, _x, _y);
+
   return {
     _w,
     _h,

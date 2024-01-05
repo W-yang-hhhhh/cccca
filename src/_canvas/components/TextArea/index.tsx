@@ -38,9 +38,9 @@ export const TextAreaComp = (props: Props) => {
   }, [val]);
 
   const onBlurHandle = (e: any) => {
-    console.log("e", e);
+    
     const { value, offsetHeight, offsetWidth, rows, textContent } = e.target;
-    console.log("textContent", textContent);
+    
     onblur({
       height: val.height,
       width: offsetWidth,
@@ -49,7 +49,7 @@ export const TextAreaComp = (props: Props) => {
   };
   const onChangeHandle = (e: any) => {
     const { value, offsetHeight, offsetWidth, rows } = e.target;
-    console.log("changeEvent", e);
+    
     const heightLength = value.split("\n").length;
     setVal((pre) => ({
       ...pre,
