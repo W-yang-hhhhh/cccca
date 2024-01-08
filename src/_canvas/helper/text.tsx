@@ -71,7 +71,6 @@ const getBlurEvent = (currentElement: AElementType) => {
   let _currentElement = currentElement;
 
   return (props: Props) => {
-    console.log("props", props);
     _currentElement.changeProperty(props);
     let canvas = document.getElementById("globalCanvas") as any;
     _currentElement.changeProperty({ hidden: false });
