@@ -10,7 +10,7 @@ export const renderSelect = (ctx: CanvasRenderingContext2D, osCtx:OffscreenCanva
   if(hidden) return ;
   // let width = _w * scale[0];
   // let height = _h * scale[1];
-  ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+  // ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
   ctx.save();
   ctx.translate(x + width/2,y + height/2);
   ctx.rotate(angle);

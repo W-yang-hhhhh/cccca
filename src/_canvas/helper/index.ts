@@ -27,14 +27,22 @@ function createOnceId(): string {
     .join("-");
 }
 
+let cacheId = '';
+let cacheElement:any = undefined;
 export function getElementById(
   element: AElementType[],
   id: string,
   cb?: (element: AElementType) => void
 ): AElementType | undefined {
-  let index = element.findIndex((item) => item.id === id);
-  if (index === undefined) return undefined;
-  cb && cb(element[index]);
-
-  return element[index];
+  if(element.length> 0){
+    cb && cb(element[0])
+    return element[0]
+  }
+  // if(cacheId === id && cacheElement) return cacheElement;
+  // let index = element.findIndex((item) => item.id === id);
+  // if (index === undefined) return undefined;
+  // cb && cb(element[index]);
+  // cacheId = cacheElement;
+  // cacheElement = element[index];
+  // return element[index];
 }

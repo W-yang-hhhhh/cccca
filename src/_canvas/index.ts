@@ -6,6 +6,7 @@ import { elementType } from "./types/element";
 import { getTextWidth } from "./helper/text";
 import { canvasGlobalMouseEventHandle } from "./event/mouseEvent";
 import { renderHover } from "./render/hover";
+import { renderGuideLine } from "./render/guideLine";
 
 export default class Stage {
   private canvas: HTMLCanvasElement;
@@ -19,10 +20,13 @@ export default class Stage {
   public currentSelectId: string;
   private currentHoverId: string;
   private isMouseDown: boolean;
+  public needGuideLine: [boolean,boolean];
+
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.elements = [];
+    this.needGuideLine = [false, false];
     this.dpr = window.devicePixelRatio;
 
     canvas.width = parseInt(canvas.style.width) * this.dpr;
@@ -144,6 +148,10 @@ export default class Stage {
       this.osCtx.canvas.width,
       this.osCtx.canvas.height
     );
+    
+     
+      renderGuideLine(this.ctx,...this.needGuideLine);
+     
     this.elements.map((item) => {
       //渲染选中框
       if (item.id === this.currentSelectId) {

@@ -3,6 +3,7 @@ import { ActionType } from "../../eventSimulator";
 import { getElementById } from "../../helper";
 import { TextToEditMode } from "../../helper/text";
 import { transformElement } from "../../helper/transform";
+import { renderGuideLine } from "../../render/guideLine";
 import {
   SelectEventType,
   SelectEventTypeDir,
@@ -22,6 +23,8 @@ let startAngle = 0;
 let startScale = [1, 1];
 let initData = { x: 0, y: 0, width: 0, height: 0, fontSize: 0 };
 
+let canvasCenterX = 0;
+let canvasCenterY = 0;
 //双击延迟
 let lastTime:any = null; // 记录上一次点击时间
 const doubleClickDelay = 300;
@@ -34,7 +37,8 @@ export function canvasGlobalMouseEventHandle(
 ) {
   const offsetX = evt.offsetX;
   const offsetY = evt.offsetY;
-
+  canvasCenterX = parseInt(this.ctx.canvas.style.width) / 2;
+  canvasCenterY = parseInt(this.ctx.canvas.style.height) / 2;
   //mouseDown
   if (type === ActionType.Down) {
     isMouseDown = true;
@@ -91,8 +95,26 @@ export function canvasGlobalMouseEventHandle(
       //拖拽位移
       currentId &&
         getElementById(elements, currentId, (element) => {
-          const x = offsetX - startPointX;
-          const y = offsetY - startPointY;
+          
+          const {width, height} = element?.getElementData() || {width: 0,height:0};
+          console.log('element',width, height)
+          let x = offsetX - startPointX;
+          let y = offsetY - startPointY;
+
+          if(Math.abs((x + width/2) - canvasCenterX)<20){
+            x = canvasCenterX - width/2;
+            this.needGuideLine[1] = true;
+          }else {
+            this.needGuideLine[1] = false;
+          }
+          if(Math.abs((y + height/2) - canvasCenterY)<20){
+            
+            y = canvasCenterY - height/2;
+            this.needGuideLine[0] = true;
+          }else {
+            this.needGuideLine[0] = false;
+          }
+        
           element?.changeProperty({
             x,
             y,
@@ -127,6 +149,7 @@ export function canvasGlobalMouseEventHandle(
     startAngle = 0;
     eventType = undefined;
     direction = undefined;
+    this.needGuideLine = [false ,false]
   }
 
   //mouseLeave
